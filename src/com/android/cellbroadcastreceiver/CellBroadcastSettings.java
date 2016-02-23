@@ -24,6 +24,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.os.UserManager;
@@ -272,9 +273,13 @@ public class CellBroadcastSettings extends Activity {
                         }
                     };
 
-            // Show extra settings when developer options is enabled in settings.
-            boolean enableDevSettings = Settings.Global.getInt(getContext().getContentResolver(),
-                    Settings.Global.DEVELOPMENT_SETTINGS_ENABLED, 0) != 0;
+            // Show extra settings when developer options is enabled in settings
+            // Only show this on eng builds
+            boolean enableDevSettings = false;
+            if (!Build.TYPE.equals("userdebug") && !Build.TYPE.equals("user")) {
+                enableDevSettings = Settings.Global.getInt(getContext().getContentResolver(),
+                        Settings.Global.DEVELOPMENT_SETTINGS_ENABLED, 0) != 0;
+            }
 
             Resources res = getResources();
 
